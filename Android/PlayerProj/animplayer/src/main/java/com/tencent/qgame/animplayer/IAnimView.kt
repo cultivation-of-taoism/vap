@@ -27,7 +27,7 @@ import com.tencent.qgame.animplayer.util.ScaleType
 import java.io.File
 
 interface IAnimView {
-
+    val clearWhenStop:Boolean//Stay:新增
     fun prepareTextureView()
 
     fun getSurfaceTexture(): SurfaceTexture?

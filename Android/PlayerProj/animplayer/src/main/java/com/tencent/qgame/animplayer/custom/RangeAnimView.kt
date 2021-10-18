@@ -43,10 +43,6 @@ class RangeAnimView(context: Context, attrs: AttributeSet? = null, defStyleAttr:
         }
     }
 
-    init {
-        player.animListener = animProxyListener
-    }
-
     fun setPlayerRange(startIdx:Int, endIdx:Int) {
         player.setRange(startIdx,endIdx)
     }

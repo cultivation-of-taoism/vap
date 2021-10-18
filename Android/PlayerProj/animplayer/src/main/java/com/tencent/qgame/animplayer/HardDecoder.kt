@@ -140,7 +140,7 @@ open class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture
                     setOnFrameAvailableListener(this@HardDecoder)
                     setDefaultBufferSize(videoWidth, videoHeight)
                 }
-                clearFrame()
+                if (player.animView.clearWhenStop) clearFrame()
             }
 
         } catch (e: Throwable) {
@@ -348,7 +348,7 @@ open class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture
 
     open fun release(decoder: MediaCodec?, extractor: MediaExtractor?) {
         renderThread.handler?.post {
-            render?.clearFrame()
+            if (player.animView.clearWhenStop) render?.clearFrame()
             try {
                 ALog.i(TAG, "release")
                 decoder?.apply {

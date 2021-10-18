@@ -47,8 +47,8 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
     companion object {
         private const val TAG = "${Constant.TAG}.AnimView"
     }
-    open val player: AnimPlayer
-
+    open val player: AnimPlayer = AnimPlayer(this)
+    override val clearWhenStop: Boolean//Stay:新增
     private val uiHandler by lazy { Handler(Looper.getMainLooper()) }
     private var surface: SurfaceTexture? = null
     internal var animListener: IAnimListener? = null
@@ -94,10 +94,14 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     init {
         hide()
-        player = AnimPlayer(this)
+        //Stay:修改开始
         player.animListener = animProxyListener
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AnimView)
+        clearWhenStop = typedArray.getBoolean(R.styleable.AnimView_clearWhenStop, true)
+        typedArray.recycle()//Stay:修改结束
     }
 
+    open fun initPlayer(): AnimPlayer = AnimPlayer(this)
 
     override fun prepareTextureView() {
         uiHandler.post {
@@ -275,10 +279,12 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
         return scaleTypeUtil.getRealSize()
     }
 
+    override fun clearWhenStop(): Boolean = clearWhenStop
+
     protected fun hide() {
         lastFile?.close()
         ui {
-            removeAllViews()
+            if (clearWhenStop) removeAllViews()//Stay:修改
         }
     }
 
