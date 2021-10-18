@@ -2,9 +2,7 @@ package com.tencent.qgame.animplayer.custom
 
 import com.tencent.qgame.animplayer.AnimPlayer
 import com.tencent.qgame.animplayer.AudioPlayer
-import com.tencent.qgame.animplayer.HardDecoder
 import com.tencent.qgame.animplayer.IAnimView
-import com.tencent.qgame.animplayer.util.ALog
 
 class RangeAnimPlayer(animView: IAnimView) : AnimPlayer(animView) {
     fun setRange(sIdx:Int, eIdx:Int) {
