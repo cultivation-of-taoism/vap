@@ -26,28 +26,29 @@ import com.tencent.qgame.animplayer.file.IFileContainer
 import com.tencent.qgame.animplayer.util.ALog
 import com.tencent.qgame.animplayer.util.MediaUtil
 
-class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameAvailableListener {
+open class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture
+.OnFrameAvailableListener {
 
 
     companion object {
         private const val TAG = "${Constant.TAG}.HardDecoder"
     }
 
-    private var glTexture: SurfaceTexture? = null
-    private val bufferInfo by lazy { MediaCodec.BufferInfo() }
-    private var needDestroy = false
+    protected var glTexture: SurfaceTexture? = null
+    protected val bufferInfo by lazy { MediaCodec.BufferInfo() }
+    protected var needDestroy = false
 
     // 动画的原始尺寸
     private var videoWidth = 0
     private var videoHeight = 0
 
     // 动画对齐后的尺寸
-    private var alignWidth = 0
-    private var alignHeight = 0
+    protected var alignWidth = 0
+    protected var alignHeight = 0
 
     // 动画是否需要走YUV渲染逻辑的标志位
-    private var needYUV = false
-    private var outputFormat: MediaFormat? = null
+    protected var needYUV = false
+    protected var outputFormat: MediaFormat? = null
 
     override fun start(fileContainer: IFileContainer) {
         isStopReq = false
@@ -182,7 +183,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
         }
     }
 
-    private fun startDecode(extractor: MediaExtractor ,decoder: MediaCodec) {
+    open fun startDecode(extractor: MediaExtractor ,decoder: MediaCodec) {
         val TIMEOUT_USEC = 10000L
         var inputChunk = 0
         var outputDone = false
@@ -295,7 +296,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
     /**
      * 获取到解码后每一帧的YUV数据，裁剪出正确的尺寸
      */
-    private fun yuvProcess(decoder: MediaCodec, outputIndex: Int) {
+    protected fun yuvProcess(decoder: MediaCodec, outputIndex: Int) {
         val outputBuffer = decoder.outputBuffers[outputIndex]
         outputBuffer?.let {
             it.position(0)
@@ -345,7 +346,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
         }
     }
 
-    private fun release(decoder: MediaCodec?, extractor: MediaExtractor?) {
+    open fun release(decoder: MediaCodec?, extractor: MediaExtractor?) {
         renderThread.handler?.post {
             render?.clearFrame()
             try {
@@ -380,7 +381,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
         }
     }
 
-    private fun destroyInner() {
+    protected fun destroyInner() {
         renderThread.handler?.post {
             player.pluginManager.onDestroy()
             render?.destroyRender()

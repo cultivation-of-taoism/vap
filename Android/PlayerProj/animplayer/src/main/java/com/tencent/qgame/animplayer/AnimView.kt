@@ -47,17 +47,17 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
     companion object {
         private const val TAG = "${Constant.TAG}.AnimView"
     }
-    private val player: AnimPlayer
+    open val player: AnimPlayer
 
     private val uiHandler by lazy { Handler(Looper.getMainLooper()) }
     private var surface: SurfaceTexture? = null
-    private var animListener: IAnimListener? = null
+    internal var animListener: IAnimListener? = null
     private var innerTextureView: InnerTextureView? = null
     private var lastFile: IFileContainer? = null
-    private val scaleTypeUtil = ScaleTypeUtil()
+    protected val scaleTypeUtil = ScaleTypeUtil()
 
     // 代理监听
-    private val animProxyListener by lazy {
+    open val animProxyListener by lazy {
         object : IAnimListener {
 
             override fun onVideoConfigReady(config: AnimConfig): Boolean {
@@ -275,7 +275,7 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
         return scaleTypeUtil.getRealSize()
     }
 
-    private fun hide() {
+    protected fun hide() {
         lastFile?.close()
         ui {
             removeAllViews()

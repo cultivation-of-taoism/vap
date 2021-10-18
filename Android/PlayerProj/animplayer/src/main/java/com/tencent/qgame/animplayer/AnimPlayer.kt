@@ -21,7 +21,7 @@ import com.tencent.qgame.animplayer.mask.MaskConfig
 import com.tencent.qgame.animplayer.plugin.AnimPluginManager
 import com.tencent.qgame.animplayer.util.ALog
 
-class AnimPlayer(val animView: IAnimView) {
+open class AnimPlayer(val animView: IAnimView) {
 
     companion object {
         private const val TAG = "${Constant.TAG}.AnimPlayer"
@@ -127,7 +127,7 @@ class AnimPlayer(val animView: IAnimView) {
 
     }
 
-    private fun prepareDecoder() {
+    open fun prepareDecoder() {
         if (decoder == null) {
             decoder = HardDecoder(this).apply {
                 playLoop = this@AnimPlayer.playLoop
