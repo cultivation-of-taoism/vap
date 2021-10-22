@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 28
@@ -24,6 +25,38 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version") {
         exclude module: 'annotations'
+    }
+}
+
+def currentVersion = '2.0.204'
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                credentials {
+                    username '616e60633da6beba7ecc228e'
+                    password 'DkU(tpewtJxd'
+                }
+                def releaseUrl = 'https://packages.aliyun.com/maven/repository/2147418-release-wpU2aJ/'
+                def snapshotUrl = 'https://packages.aliyun.com/maven/repository/2147418-snapshot-2MS2Wf/'
+                url = currentVersion.endsWith('SNAPSHOT') ? snapshotUrl : releaseUrl
+            }
+        }
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.daofeng'
+                artifactId = 'vap'
+                version = currentVersion
+                from components.release
+            }
+            debug(MavenPublication) {
+                groupId = 'com.daofeng'
+                artifactId = 'vap'
+                version = currentVersion
+                from components.debug
+            }
+        }
     }
 }
 

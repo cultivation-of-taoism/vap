@@ -3,11 +3,12 @@ package com.tencent.qgame.animplayer.custom
 import android.content.Context
 import android.util.AttributeSet
 import com.tencent.qgame.animplayer.AnimConfig
+import com.tencent.qgame.animplayer.AnimPlayer
 import com.tencent.qgame.animplayer.AnimView
 import com.tencent.qgame.animplayer.inter.IAnimListener
 
-class RangeAnimView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    AnimView(context, attrs, defStyleAttr) {
+open class RangeAnimView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
+                                                   defStyleAttr: Int = 0) : AnimView(context, attrs, defStyleAttr) {
     override val player: RangeAnimPlayer = RangeAnimPlayer(this)
     override val animProxyListener by lazy {
         object : IAnimListener {

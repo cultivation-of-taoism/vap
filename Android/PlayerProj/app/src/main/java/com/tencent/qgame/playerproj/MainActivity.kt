@@ -15,17 +15,21 @@
  */
 package com.tencent.qgame.playerproj
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.tencent.qgame.playerproj.player.AnimActiveDemoActivity
-import com.tencent.qgame.playerproj.player.AnimSimpleDemoActivity
-import com.tencent.qgame.playerproj.player.AnimSpecialSizeDemoActivity
-import com.tencent.qgame.playerproj.player.AnimVapxDemoActivity
+import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import android.widget.Toast
+import com.permissionx.guolindev.PermissionX
+import com.tencent.qgame.animplayer.util.ALog
+import com.tencent.qgame.animplayer.util.IALog
+import com.tencent.qgame.playerproj.player.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : Activity(){
+class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +46,40 @@ class MainActivity : Activity(){
         btn4.setOnClickListener {
             startActivity(Intent(this, AnimSpecialSizeDemoActivity::class.java))
         }
+        btn5.setOnClickListener {
+            startActivity(Intent(this, AnimRangeActivity::class.java))
+        }
+        // 初始化日志
+        initLog()
+        requestPermission()
     }
 
+    private fun requestPermission() {
+        PermissionX.init(this).permissions(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .request{ allGranted, _, _ ->
+                if (!allGranted) Toast.makeText(this, "你拒绝了外部存储权限", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun initLog() {
+        ALog.isDebug = true
+        ALog.log = object : IALog {
+            override fun i(tag: String, msg: String) {
+                Log.i(tag, msg)
+            }
+
+            override fun d(tag: String, msg: String) {
+                Log.d(tag, msg)
+            }
+
+            override fun e(tag: String, msg: String) {
+                Log.e(tag, msg)
+            }
+
+            override fun e(tag: String, msg: String, tr: Throwable) {
+                Log.e(tag, msg, tr)
+            }
+        }
+    }
 
 }

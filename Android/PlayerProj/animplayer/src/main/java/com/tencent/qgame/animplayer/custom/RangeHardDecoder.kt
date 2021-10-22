@@ -10,7 +10,7 @@ import java.util.ArrayList
 
 class RangeHardDecoder(player: AnimPlayer) : HardDecoder(player) {
     companion object {
-        private const val TAG = "${Constant.TAG}.HardDecoder"
+        private const val TAG = "${Constant.TAG}.RangeHardDecoder"
     }
     var startIdx: Int = 0
     var endIdx: Int = 0

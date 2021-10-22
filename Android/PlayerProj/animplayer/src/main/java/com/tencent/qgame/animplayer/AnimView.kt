@@ -95,13 +95,11 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
     init {
         hide()
         //Stay:修改开始
-        player.animListener = animProxyListener
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AnimView)
         clearWhenStop = typedArray.getBoolean(R.styleable.AnimView_clearWhenStop, true)
         typedArray.recycle()//Stay:修改结束
     }
 
-    open fun initPlayer(): AnimPlayer = AnimPlayer(this)
 
     override fun prepareTextureView() {
         uiHandler.post {
@@ -252,6 +250,7 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 
     override fun startPlay(fileContainer: IFileContainer) {
+        if (player.animListener == null) player.animListener = animProxyListener//Range:新增
         ui {
             if (visibility != View.VISIBLE) {
                 ALog.e(TAG, "AnimView is GONE, can't play")
@@ -278,8 +277,6 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun getRealSize(): Pair<Int, Int> {
         return scaleTypeUtil.getRealSize()
     }
-
-    override fun clearWhenStop(): Boolean = clearWhenStop
 
     protected fun hide() {
         lastFile?.close()

@@ -96,8 +96,6 @@ class AnimActiveDemoActivity : Activity(), IAnimListener {
     }
 
     private fun init() {
-        // 初始化日志
-        initLog()
         // 初始化调试开关
         initTestView()
         // 获取动画view
@@ -183,28 +181,6 @@ class AnimActiveDemoActivity : Activity(), IAnimListener {
         super.onPause()
         // 页面切换是停止播放
         animView.stopPlay()
-    }
-
-
-    private fun initLog() {
-        ALog.isDebug = false
-        ALog.log = object : IALog {
-            override fun i(tag: String, msg: String) {
-                Log.i(tag, msg)
-            }
-
-            override fun d(tag: String, msg: String) {
-                Log.d(tag, msg)
-            }
-
-            override fun e(tag: String, msg: String) {
-                Log.e(tag, msg)
-            }
-
-            override fun e(tag: String, msg: String, tr: Throwable) {
-                Log.e(tag, msg, tr)
-            }
-        }
     }
 
     private fun updateTestMask() {
